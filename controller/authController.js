@@ -1,6 +1,8 @@
 const passport = require('passport');
+const asyncHandler = require("express-async-handler");
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require('./../Model/userModel');
+const regularUser = require('./../Model/regularUserModel')
 
 // Google Strategy
 passport.use(
@@ -54,7 +56,6 @@ passport.deserializeUser(async (id, done) => {
   }
 });
 
-// روتات تسجيل الدخول والخروج
 exports.loginWithGoogle = (req, res, next) => {
   passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next);
 };
@@ -64,3 +65,17 @@ exports.googleCallback = (req, res) => {
    message: `Hello ${req.user.displayName}!`
   });  // عرض اسم المستخدم بعد تسجيل الدخول
 };
+
+exports.signUp = asyncHandler(async (req, res, next) => {
+  const user = await regularUser.create({
+    name: req.body.name,
+    email: req.body.email,
+    password: req.body.password,
+    passwordConfirm: req.body.passwordConfirm,
+    role: req.body.role
+  });
+  res.status(200).json({
+    message: "sign up successfully",
+    user,
+  });
+});   

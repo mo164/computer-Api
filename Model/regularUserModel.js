@@ -40,7 +40,7 @@ const regularUserSchema = new mongoose.Schema({
 
 
 // Hash password before saving
-userSchema.pre("save", async function (next) {
+regularUserSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
   this.password = await bcrypt.hash(this.password, 12);
   this.passwordConfirm = undefined;
@@ -48,10 +48,10 @@ userSchema.pre("save", async function (next) {
 });
 
 // Password comparison function
-userSchema.methods.comparePasswords = async function (enteredPassword, hashedPassword) {
+regularUserSchema.methods.comparePasswords = async function (enteredPassword, hashedPassword) {
   return await bcrypt.compare(enteredPassword, hashedPassword);
 };
-userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
+regularUserSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
   if (this.passwordChangedAt) {
     const changedTimestamp = parseInt(
       this.passwordChangedAt.getTime() / 1000,

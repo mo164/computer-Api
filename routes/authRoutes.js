@@ -11,4 +11,5 @@ router.get(
   authController.googleCallback
 );
 
+router.post("/signup",authController.signUp)
 module.exports = router;
