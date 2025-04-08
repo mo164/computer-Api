@@ -26,7 +26,7 @@ app.use(cors());
 app.use(morgan("dev"));
 
 if (process.env.NODE_ENV === "development") {
-  console.log("you are in dev mode🤨");
+  console.log("you are in dev mode🤍🤍");
 } else {
   console.log("you are in production mode");
 }
@@ -36,3 +36,5 @@ app.use(express.json());
 // MOUNTING ROUTES
 app.use('/auth', authRoutes);
 module.exports = app;
+
+// comment
