@@ -3,7 +3,7 @@ const asyncHandler = require("express-async-handler");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const User = require("./../Model/userModel");
 const regularUser = require("./../Model/regularUserModel");
-
+const appError = require('./../utils/appError')
 // Google Strategy
 passport.use(
   new GoogleStrategy(
@@ -93,7 +93,7 @@ exports.login = asyncHandler(async (req, res, next) => {
   }
 
   // find the user by the email
-  const user = await User.findOne({ email: email }).select("+password");
+  const user = await regularUser.findOne({ email: email }).select("+password");
   if (!user) {
     return next(new appError("no user found with this email", 401));
   }
