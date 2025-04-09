@@ -4,9 +4,11 @@ const morgan = require("morgan");
 const passport = require("passport");
 const session = require("express-session");
 const authRoutes = require("./routes/authRoutes");
-
-require('dotenv').config();
-require('./controller/authController'); 
+const complaintRoutes = require("./routes/complaintRoutes")
+ const globalErrorHandling = require("./utils/globalErrorHandling");
+ const appError = require("./utils/appError");
+require("dotenv").config();
+require("./controller/authController");
 
 const app = express();
 
@@ -34,6 +36,12 @@ if (process.env.NODE_ENV === "development") {
 app.use(express.json());
 
 // MOUNTING ROUTES
-app.use('/auth', authRoutes);
-module.exports = app;
+app.use("/auth", authRoutes);
+app.use("/complaints",complaintRoutes)
+// app.all("*", (req, res, next) => {
+//   next(new appError(`Can't find ${req.originalUrl} on this server!`, 404));
+// });
+// // GLOBAL ERROR HANDLING MIDDLEWARE FOR EXPRESS
+ app.use(globalErrorHandling);
 
+module.exports = app;
