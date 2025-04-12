@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
-const slugify = require("slugify");
+ const slugify = require("slugify");
 const bcrypt = require("bcrypt");
 
 const regularUserSchema = new mongoose.Schema({
@@ -18,7 +18,7 @@ const regularUserSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, "Password is required"],
-    minlength: [6, "Too short password"],
+    minlength: [8, "Too short password"],
     select: false,
   },
   passwordConfirm: {
@@ -29,15 +29,14 @@ const regularUserSchema = new mongoose.Schema({
         return value === this.password;
       },
       message: "Passwords are not the same",
-    }
+    },
   },
   role: {
     type: String,
-    enum: ["user", "manager", "admin"],
+    enum: ["user", "admin"],
     default: "user",
-  }
+  },
 });
-
 
 // Hash password before saving
 regularUserSchema.pre("save", async function (next) {
@@ -48,7 +47,10 @@ regularUserSchema.pre("save", async function (next) {
 });
 
 // Password comparison function
-regularUserSchema.methods.comparePasswords = async function (enteredPassword, hashedPassword) {
+regularUserSchema.methods.comparePasswords = async function (
+  enteredPassword,
+  hashedPassword
+) {
   return await bcrypt.compare(enteredPassword, hashedPassword);
 };
 regularUserSchema.methods.changedPasswordAfter = function (JWTTimestamp) {

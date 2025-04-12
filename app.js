@@ -38,6 +38,7 @@ app.use(express.json());
 // MOUNTING ROUTES
 app.use("/auth", authRoutes);
 app.use("/complaints",complaintRoutes)
+
 // app.all("*", (req, res, next) => {
 //   next(new appError(`Can't find ${req.originalUrl} on this server!`, 404));
 // });
