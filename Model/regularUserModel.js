@@ -28,7 +28,7 @@ const regularUserSchema = new mongoose.Schema({
       validator: function (value) {
         return value === this.password;
       },
-      message: "Passwords are not the same",
+      message: "Passwords are not the same", 
     },
   },
   role: {
